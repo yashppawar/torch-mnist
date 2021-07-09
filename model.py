@@ -80,8 +80,8 @@ class NeuralNetwork(nn.Module):
             print('\n\nModel not compiled\n\n')
 
         for epoch in range(epochs):  # train the model for given number of epochs
-            print(f"Epoch {epoch+1}\n-------------------------------")
+            print(f"\nEpoch {epoch+1}\n-------------------------------")
             self.__train(train_dataloader, verbose=verbose)
 
-            if not val_dataloader:  # run the validation if provided
+            if val_dataloader:  # run the validation if provided
                 self.__test(val_dataloader, verbose=verbose)
