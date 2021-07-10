@@ -1,6 +1,6 @@
 import torch
 from torch.nn import CrossEntropyLoss
-from torch.optim import SGD
+from torch.optim import Adam
 from data import load_train_data, load_test_data
 from model import NeuralNetwork
 
@@ -19,7 +19,7 @@ print('************************************************\n\n\n')
 
 loss_fn = CrossEntropyLoss()
 learning_rate = 1e-3
-optimiser = SGD(model.parameters(), lr=learning_rate)
+optimiser = Adam(model.parameters(), lr=learning_rate)
 
 model.compile(loss_fn, optimiser)
 
