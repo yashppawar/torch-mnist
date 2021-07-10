@@ -6,21 +6,26 @@ class NeuralNetwork(nn.Module):
     def __init__(self):
         """Instantiate the Model"""
         super(NeuralNetwork, self).__init__()
+        # self.flatten = nn.Flatten()
+        # self.linear_relu_stack = nn.Sequential()
+        self.conv = nn.Conv2d(in_channels=1,out_channels=9,kernel_size=(5,5))
         self.flatten = nn.Flatten()
-        self.linear_relu_stack = nn.Sequential(
-            nn.Linear(28*28, 512),
-            nn.ReLU(),
-            nn.Linear(512, 10),
-            nn.ReLU()
-        )
+        self.fc = nn.Linear(5184,10)
+        
 
     def forward(self, x):
-        """
-        run X from the layers to get prediction
-        """
+        x = nn.functional.relu(self.conv(x))
         x = self.flatten(x)
-        logits = self.linear_relu_stack(x)
-        return logits
+        x = nn.functional.log_softmax(self.fc(x),dim=1)
+        return x
+
+    # def forward(self, x):
+    #     """
+    #     run X from the layers to get prediction
+    #     """
+    #     # x = self.flatten(x)
+    #     logits = self.linear_relu_stack(x)
+    #     return logits
 
     def compile(self, loss_fn, optimizer):
         """
@@ -78,7 +83,7 @@ class NeuralNetwork(nn.Module):
             print('\n\nModel not compiled\n\n')
 
         for epoch in range(epochs):  # train the model for given number of epochs
-            print(f"\nEpoch {epoch+1}\n-------------------------------")
+            print(f"Epoch {epoch+1}\n-------------------------------")
             self.__train(train_dataloader, verbose=verbose)
 
             if val_dataloader:  # run the validation if provided
